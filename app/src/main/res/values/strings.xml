@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AndroidChat</string>
+    <string name="login.button.signin">Sign In</string>
+    <string name="login.button.signup">Sign Up</string>
+    <string name="login.edittxthint.password">Password</string>
+    <string name="login.edittxthint.name">Name</string>
+</resources>
