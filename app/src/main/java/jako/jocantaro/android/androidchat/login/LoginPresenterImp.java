@@ -1,5 +1,7 @@
 package jako.jocantaro.android.androidchat.login;
 
+import jako.jocantaro.android.androidchat.login.events.LoginEvent;
+
 /**
  * Created by Jocantaro on 10/06/2016.
  */
@@ -10,6 +12,10 @@ public class LoginPresenterImp implements LoginPresenter {
     public LoginPresenterImp (LoginView loginView){
         this.loginView = loginView;
         this.loginInteractor = new LoginInteractorImp();
+    }
+
+    public void onCreate(){
+
     }
 
     @Override
@@ -49,6 +55,34 @@ public class LoginPresenterImp implements LoginPresenter {
             loginView.showProgress();
         }
         loginInteractor.doSignUp(email,password);
+    }
+
+    @Override
+    public void onEventMainThread(LoginEvent event) {
+
+        switch (event.getEventType()){
+            case LoginEvent.onSignInSuccess:
+                onSignInSuccess();
+                break;
+            case LoginEvent.onSignInError:
+                onSignInError(event.getErrorMessage());
+                break;
+            case LoginEvent.onSignupSuccess:
+                onSignUpSuccess();
+                break;
+            case LoginEvent.onSignUpError:
+                onSignupError(event.getErrorMessage());
+                break;
+            case LoginEvent.onFailedToRecoverSession:
+                onFailedRecoverySession();
+                break;
+        }
+
+    }
+
+    private void onFailedRecoverySession (){
+
+
     }
 
     private void onSignInSuccess(){
