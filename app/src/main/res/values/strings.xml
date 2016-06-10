@@ -4,4 +4,7 @@
     <string name="login.button.signup">Sign Up</string>
     <string name="login.edittxthint.password">Password</string>
     <string name="login.edittxthint.name">Name</string>
+    <string name="login.error.message.signIn">Imposible iniciar sesión %s</string>
+    <string name="login.error.message.signUp">Fallo en el registro. %s</string>
+    <string name="login.notice.message.signIn">Registro realizado correctamente</string>
 </resources>

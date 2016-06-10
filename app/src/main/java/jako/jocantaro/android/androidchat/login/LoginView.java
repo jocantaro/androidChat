@@ -9,7 +9,7 @@ public interface LoginView {
     void handleSignUp();
     void handleSignIn();
 
-    void navigateToMainScree();
+    void navigateToMainScreen();
     void loginError(String error);
 
     void newUserSuccess();

@@ -1,6 +1,8 @@
 package jako.jocantaro.android.androidchat.login;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,11 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jako.jocantaro.android.androidchat.R;
+import jako.jocantaro.android.androidchat.contactList.ContactListActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoginView{
 
@@ -32,6 +36,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     LinearLayout layoutButtom;
     @Bind(R.id.progressbar)
     ProgressBar progressbar;
+    @Bind(R.id.container)
+    RelativeLayout container;
 
     private LoginPresenter loginPresenter;
 
@@ -40,15 +46,18 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        loginPresenter = new LoginPresenterImp(this);
+
     }
 
-    @OnClick({R.id.btn_singIn, R.id.btn_singUn})
+    @OnClick({R.id.btn_singIn, R.id.btn_singUp})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_singIn:
                 handleSignIn();
                 break;
-            case R.id.btn_singUn:
+            case R.id.btn_singUp:
                 handleSignUp();
                 break;
         }
@@ -91,23 +100,29 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     }
 
     @Override
-    public void navigateToMainScree() {
+    public void navigateToMainScreen() {
 
+        Intent i = new Intent(this, ContactListActivity.class);
     }
 
     @Override
     public void loginError(String error) {
-
+        inputEditTXTPass.setText("");
+        String msgError = String.format(getString(R.string.login_error_message_signIn),error);
+        inputEditTXTPass.setError(msgError);
     }
 
     @Override
     public void newUserSuccess() {
+        Snackbar.make(container,R.string.login_notice_message_signIn,Snackbar.LENGTH_LONG).show();
 
     }
 
     @Override
     public void newUserError(String error) {
-
+        inputEditTXTPass.setText("");
+        String msgError = String.format(getString(R.string.login_error_message_signUp),error);
+        inputEditTXTPass.setError(msgError);
     }
 
     private void setInputs (boolean enabled){
