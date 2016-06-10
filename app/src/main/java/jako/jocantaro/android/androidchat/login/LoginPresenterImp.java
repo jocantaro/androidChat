@@ -1,27 +1,35 @@
 package jako.jocantaro.android.androidchat.login;
 
+import android.util.Log;
+
+import jako.jocantaro.android.androidchat.lib.EventBus;
+import jako.jocantaro.android.androidchat.lib.GreenRobotEventBus;
 import jako.jocantaro.android.androidchat.login.events.LoginEvent;
+import jako.jocantaro.android.androidchat.login.ui.LoginView;
 
 /**
  * Created by Jocantaro on 10/06/2016.
  */
 public class LoginPresenterImp implements LoginPresenter {
+    private EventBus eventBus;
     LoginView loginView;
     LoginInteractor loginInteractor;
 
     public LoginPresenterImp (LoginView loginView){
         this.loginView = loginView;
         this.loginInteractor = new LoginInteractorImp();
+        this.eventBus = GreenRobotEventBus.getInstance();
     }
 
     public void onCreate(){
-
+        eventBus.register(this);
     }
 
     @Override
     public void onDestroy() {
         //evitamos un memory leak
         loginView = null;
+        eventBus.unregister(this);
     }
 
     @Override
@@ -81,7 +89,11 @@ public class LoginPresenterImp implements LoginPresenter {
     }
 
     private void onFailedRecoverySession (){
-
+        if (loginView != null) {
+            loginView.hideProgress();
+            loginView.enableInputs();
+        }
+        Log.e("LoginPresenterImpl", "OnFailedRecoverySession");
 
     }
 

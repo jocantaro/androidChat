@@ -1,4 +1,4 @@
-package jako.jocantaro.android.androidchat.login;
+package jako.jocantaro.android.androidchat.login.ui;
 
 public interface LoginView {
     void enableInputs();

@@ -9,13 +9,15 @@ import com.firebase.client.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import jako.jocantaro.android.androidchat.entities.User;
+
 public class FirebaseHelper {
 
     //variable con la referencia al repositorio
     private Firebase dataReference;
 
     //para el respositorio tenemos una URL.
-    private final static String FIREBASE_URL = "https://chat-cd9e6.firebaseio.com";
+    private final static String FIREBASE_URL = "https://jocantarochat.firebaseio.com";
 
     //Otra constante para las rutas en el repositorio de Firebase
     private final static String CHATS_PATH = "chats";
@@ -122,11 +124,11 @@ public class FirebaseHelper {
     }
 
     public void notifyContactsOfConnectionChange(boolean online) {
-        notifyContacsOfConnectionChange (online,false);
+        notifyContacsOfConnectionChange (online, User.OFFLINE);
     }
 
     public void signOff () {
-        notifyContacsOfConnectionChange(false,true);
+        notifyContacsOfConnectionChange(User.OFFLINE,true);
     }
 
     private void notifyContacsOfConnectionChange(final boolean online, final boolean signoff) {

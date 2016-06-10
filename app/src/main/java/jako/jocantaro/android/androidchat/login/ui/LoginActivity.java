@@ -1,4 +1,4 @@
-package jako.jocantaro.android.androidchat.login;
+package jako.jocantaro.android.androidchat.login.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +17,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jako.jocantaro.android.androidchat.R;
 import jako.jocantaro.android.androidchat.contactList.ContactListActivity;
+import jako.jocantaro.android.androidchat.login.LoginPresenter;
+import jako.jocantaro.android.androidchat.login.LoginPresenterImp;
 
-public class LoginActivity extends AppCompatActivity implements LoginView{
+public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Bind(R.id.inputEditTXT_Name)
     EditText inputEditTXTName;
@@ -48,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         ButterKnife.bind(this);
 
         loginPresenter = new LoginPresenterImp(this);
+        loginPresenter.onCreate();
         loginPresenter.checkForAuthenticatedUser();
 
     }
@@ -62,6 +65,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
                 handleSignUp();
                 break;
         }
+    }
+
+    @Override
+    protected  void onDestroy(){
+        super.onDestroy();
+        loginPresenter.onDestroy();
+
     }
 
     @Override
@@ -84,26 +94,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
 
     @Override
     public void hideProgress() {
+        progressbar.setVisibility(View.INVISIBLE);
 
     }
 
     @Override
     public void handleSignUp() {
         loginPresenter.registerNewUser(inputEditTXTName.getText().toString(),
-                                        inputEditTXTPass.getText().toString());
+                inputEditTXTPass.getText().toString());
 
     }
 
     @Override
     public void handleSignIn() {
         loginPresenter.validateLogin(inputEditTXTName.getText().toString(),
-                                        inputEditTXTPass.getText().toString());
+                inputEditTXTPass.getText().toString());
     }
 
     @Override
     public void navigateToMainScreen() {
 
         Intent i = new Intent(this, ContactListActivity.class);
+        startActivity(i);
     }
 
     @Override
