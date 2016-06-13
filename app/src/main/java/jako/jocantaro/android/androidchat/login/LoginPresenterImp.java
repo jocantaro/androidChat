@@ -2,6 +2,8 @@ package jako.jocantaro.android.androidchat.login;
 
 import android.util.Log;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import jako.jocantaro.android.androidchat.lib.EventBus;
 import jako.jocantaro.android.androidchat.lib.GreenRobotEventBus;
 import jako.jocantaro.android.androidchat.login.events.LoginEvent;
@@ -66,6 +68,7 @@ public class LoginPresenterImp implements LoginPresenter {
     }
 
     @Override
+    @Subscribe
     public void onEventMainThread(LoginEvent event) {
 
         switch (event.getEventType()){

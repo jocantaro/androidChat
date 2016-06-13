@@ -5,10 +5,10 @@ package jako.jocantaro.android.androidchat.lib;
  */
 public class GreenRobotEventBus implements EventBus {
 
-    de.greenrobot.event.EventBus eventBus;
+    org.greenrobot.eventbus.EventBus eventBus;
 
     public GreenRobotEventBus(){
-        this.eventBus = de.greenrobot.event.EventBus.getDefault();
+        this.eventBus = org.greenrobot.eventbus.EventBus.getDefault();
     }
 
     private static class SingletonHolder {

@@ -16,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jako.jocantaro.android.androidchat.R;
-import jako.jocantaro.android.androidchat.contactList.ContactListActivity;
+import jako.jocantaro.android.androidchat.contactList.ui.ContactListActivity;
 import jako.jocantaro.android.androidchat.login.LoginPresenter;
 import jako.jocantaro.android.androidchat.login.LoginPresenterImp;
 
