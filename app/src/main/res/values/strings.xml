@@ -3,12 +3,19 @@
     <string name="login.button.signin">Sign In</string>
     <string name="login.button.signup">Sign Up</string>
     <string name="login.edittxthint.password">Password</string>
-    <string name="login.edittxthint.name">Name</string>
+    <string name="login.edittxthint.name">Email</string>
     <string name="login.error.message.signIn">Imposible iniciar sesión %s</string>
     <string name="login.error.message.signUp">Fallo en el registro. %s</string>
     <string name="login.notice.message.signIn">Registro realizado correctamente</string>
 
     <string name="contactlist.menu.action.signoff">Cerrar sesión</string>
     <string name="contactlist.title">Contactos</string>
+
+    <string name="addcontact.message.title">Agregar contacto</string>
+    <string name="addcontact.message.add">Aceptar</string>
+    <string name="addcontact.message.cancel">Cancelar</string>
+    <string name="addcontact.message.contactadded">Contacto agregado exitosamente</string>
+    <string name="addcontact.message.error">Imposible agregar usuario no existente</string>
+
 
 </resources>

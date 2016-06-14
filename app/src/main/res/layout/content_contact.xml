@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="jako.jocantaro.android.androidchat.contactList.ui.ContactListActivity"
+    tools:showIn="@layout/activity_contact_list">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="@dimen/contact_image_size"
-        android:layout_height="@dimen/contact_image_size"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/imgAvatar"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        />
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="@dimen/fab_margin"
+        app:civ_border_width="1dp"
+        app:civ_border_color="#FF000000"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtUser"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="TEST"
+        android:text="Large Text"
+        android:id="@+id/txtUser"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/imgAvatar"
-        android:layout_toEndOf="@id/imgAvatar"
-        />
+        android:layout_toRightOf="@+id/imgAvatar"
+        android:layout_toEndOf="@+id/imgAvatar" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtStatus"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Test"
-        android:layout_below="@id/txtUser"
-        android:layout_alignLeft="@id/txtUser"
-        android:layout_alignStart="@id/txtUser"
-        />
+        android:text="Medium Text"
+        android:id="@+id/txtStatus"
+        android:layout_below="@+id/txtUser"
+        android:layout_alignLeft="@+id/txtUser"
+        android:layout_alignStart="@+id/txtUser" />
 
 </RelativeLayout>

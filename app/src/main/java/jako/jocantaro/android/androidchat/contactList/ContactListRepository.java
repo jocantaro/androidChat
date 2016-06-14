@@ -6,10 +6,10 @@ package jako.jocantaro.android.androidchat.contactList;
 public interface ContactListRepository {
 
     void signOff();
-    String getCurrentUserEmail();
-    void removeContact (String email);
-    void destroyListener();
-    void subscribeToContactListEvent();
-    void unsubscribeToContactListEvent();
-    void changeConnectionStatus(boolean online);
+    String getCurrentEmail();
+    void removeContact(String email);
+    void destroyContactListListener();
+    void subscribeForContactListUpdates();
+    void unSubscribeForContactListUpdates();
+    void changeUserConnectionStatus(boolean online);
 }

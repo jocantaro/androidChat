@@ -12,7 +12,7 @@ public class LoginInteractorImp implements LoginInteractor {
 
     @Override
     public void checkSession() {
-        loginRepository.checkSession();
+        loginRepository.checkAlreadyAuthenticated();
     }
 
     @Override

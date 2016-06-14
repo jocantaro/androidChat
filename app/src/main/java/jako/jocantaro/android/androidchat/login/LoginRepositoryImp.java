@@ -20,96 +20,100 @@ import jako.jocantaro.android.androidchat.login.events.LoginEvent;
  * Created by Jocantaro on 10/06/2016.
  */
 public class LoginRepositoryImp implements LoginRepository{
-
     private FirebaseHelper helper;
     private Firebase dataReference;
     private Firebase myUserReference;
 
-    public LoginRepositoryImp (){
-        this.helper = FirebaseHelper.getInstance();
-        this.dataReference = helper.getDataReference();
-
-        this.myUserReference = helper.getMyUserReference(); //esto va a ser nulo la primera vez, porque no hay correo asociado. Por eso hay que hacer otra asignación. L'inea 43
-
+    public LoginRepositoryImp(){
+        helper = FirebaseHelper.getInstance();
+        dataReference = helper.getDataReference();
+        myUserReference = helper.getMyUserReference();
     }
 
     @Override
     public void signUp(final String email, final String password) {
-        dataReference.createUser(email,password, new Firebase.ValueResultHandler<Map<String,Object>>(){
-
+        dataReference.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
-            public void onSuccess(Map<String, Object> stringObjectMap) {
+            public void onSuccess(Map<String, Object> result) {
                 postEvent(LoginEvent.onSignupSuccess);
-                signIn(email,password);
+                signIn(email, password);
             }
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                postEvent(LoginEvent.onSignUpError,firebaseError.getMessage());
-
+                postEvent(LoginEvent.onSignUpError, firebaseError.getMessage());
             }
         });
     }
 
     @Override
     public void signIn(String email, String password) {
-
-        dataReference.authWithPassword(email,password, new Firebase.AuthResultHandler() {
+        dataReference.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                initSignIn();
+                myUserReference = helper.getMyUserReference();
+                myUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        initSignIn(snapshot);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                    }
+                });
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                postEvent(LoginEvent.onSignInError,firebaseError.getMessage());
-
+                postEvent(LoginEvent.onSignInError, firebaseError.getMessage());
             }
         });
     }
 
-    private void registerNewUser(){
-        String email = helper.getAuthUserEmail();
-        if (email!=null){
-            User currentUser = new User();
-            currentUser.setEmail(email);
-            myUserReference.setValue(currentUser);
-        }
-    }
-
     @Override
-    public void checkSession() {
-        //comprobamos primero si est'a autentificado
-        if(dataReference.getAuth() != null){
-            initSignIn();
+    public void checkAlreadyAuthenticated() {
+        if (dataReference.getAuth() != null) {
+            myUserReference = helper.getMyUserReference();
+            myUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    initSignIn(snapshot);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    postEvent(LoginEvent.onSignInError, firebaseError.getMessage());
+                }
+            });
         } else {
             postEvent(LoginEvent.onFailedToRecoverSession);
         }
     }
 
-    private void initSignIn(){
-        myUserReference = helper.getMyUserReference();
-        myUserReference.addListenerForSingleValueEvent( new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User currentUser = dataSnapshot.getValue(User.class);
-
-                //si cuando traemos los datos, el resultado es null, tenemos que agregarlo.
-                if (currentUser == null){
-                    registerNewUser();
-                }
-                helper.changedUserConnectionStatus(User.ONLINE);
-                postEvent(LoginEvent.onSignInSuccess);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+    private void registerNewUser() {
+        String email = helper.getAuthUserEmail();
+        if (email != null) {
+            User currentUser = new User(email, true, null);
+            myUserReference.setValue(currentUser);
+        }
     }
 
-    private void postEvent (int type, String errorMessage) {
+    private void initSignIn(DataSnapshot snapshot){
+        User currentUser = snapshot.getValue(User.class);
+
+        if (currentUser == null) {
+            registerNewUser();
+        }
+        helper.changedUserConnectionStatus(User.ONLINE);
+        postEvent(LoginEvent.onSignInSuccess);
+    }
+
+    private void postEvent(int type) {
+        postEvent(type, null);
+    }
+
+    private void postEvent(int type, String errorMessage) {
         LoginEvent loginEvent = new LoginEvent();
         loginEvent.setEventType(type);
         if (errorMessage != null) {
@@ -120,7 +124,4 @@ public class LoginRepositoryImp implements LoginRepository{
         eventBus.post(loginEvent);
     }
 
-    private void postEvent (int type) {
-        postEvent(type,null);
-    }
 }
